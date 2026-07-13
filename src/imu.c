@@ -22,6 +22,9 @@ static float gyro_bias_z = 0.0f;
 static float equilibrium_angle = 175.5f;  // Ángulo de equilibrio
 static float max_angle_deg = 45.0f;       // Ángulo máximo que quieres (puedes ajustarlo)
 
+// Control de impresión
+static bool imu_print_enabled = true;     // Por defecto imprime
+
 /* Función para mapear el ángulo a rango -128 a 128 con manejo de cruce por 180° */
 static int16_t map_angle_to_range(float angle_degrees)
 {
@@ -85,8 +88,11 @@ static void imu_task(void *pvParameters)
             // Escalar a grados
             float roll_scaled = scale_to_degrees(imu_data.roll_mapped);
 
-            // Imprimir solo el Roll con 2 decimales
-            ESP_LOGI(TAG, "Roll: %6.2f°", roll_scaled);
+            // Imprimir solo si está habilitado
+            if (imu_print_enabled)
+            {
+                ESP_LOGI(TAG, "Roll: %6.2f°", roll_scaled);
+            }
         }
 
         vTaskDelay(pdMS_TO_TICKS(500));
@@ -209,4 +215,10 @@ float imu_get_equilibrium_angle(void)
 float imu_get_max_angle(void)
 {
     return max_angle_deg;
+}
+
+/* NUEVA FUNCIÓN PARA CONTROLAR LA IMPRESIÓN */
+void imu_set_print_enabled(bool enabled)
+{
+    imu_print_enabled = enabled;
 }

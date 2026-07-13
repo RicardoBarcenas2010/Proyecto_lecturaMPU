@@ -2,6 +2,7 @@
 #define IMU_H
 
 #include "esp_err.h"
+#include <stdbool.h>
 
 typedef struct
 {
@@ -34,5 +35,8 @@ void imu_set_equilibrium_angle(float angle);
 void imu_set_max_angle(float angle);
 float imu_get_equilibrium_angle(void);
 float imu_get_max_angle(void);
+
+/* NUEVA FUNCIÓN PARA CONTROLAR LA IMPRESIÓN */
+void imu_set_print_enabled(bool enabled);
 
 #endif
