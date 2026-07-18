@@ -2,26 +2,74 @@
 #define BRUSHLESS_H
 
 #include "esp_err.h"
+#include <stdint.h>
 #include <stdbool.h>
 
-// ====== PARÁMETROS ======
-#define PWM_MIN_1         5.0f
-#define PWM_MAX_1         100.0f
-#define PWM_MIN_2         0.0f
-#define PWM_MAX_2         100.0f
-#define ANGLE_MIN         -45.0f
-#define ANGLE_MAX         45.0f
+/*******************************************************
+ * CONFIGURACIÓN DEL ESC
+ *******************************************************/
 
-// ====== FUNCIONES ======
-esp_err_t brushless_init(int gpio_pin_1, int gpio_pin_2);
+// Frecuencia PWM
+#define ESC_PWM_FREQUENCY      50
+
+// Pulsos estándar
+#define ESC_MIN_US             1000
+#define ESC_MAX_US             2000
+#define ESC_ARM_US             1000
+
+// Valor inicial para ambos motores
+#define ESC_CENTER_US          1500
+
+// Límite de cambio por actualización (µs)
+#define ESC_RAMP_US            5
+
+/*******************************************************
+ * INICIALIZACIÓN
+ *******************************************************/
+
+esp_err_t brushless_init(int gpio_motor1,
+                         int gpio_motor2);
+
 esp_err_t brushless_arm(void);
-void brushless_set_pwm_motor1(float percent);
-void brushless_set_pwm_motor2(float percent);
-float brushless_get_pwm_motor1(void);
-float brushless_get_pwm_motor2(void);
-void brushless_start_sweep_char(float pwm_start, float pwm_end, float pwm_step, int delay_ms);
-void brushless_stop_sweep_char(void);
-bool brushless_is_sweep_running(void);
+
+/*******************************************************
+ * CONTROL EN MICROSEGUNDOS
+ *******************************************************/
+
+void brushless_set_motor1_us(uint16_t us);
+
+void brushless_set_motor2_us(uint16_t us);
+
+void brushless_set_both_us(uint16_t motor1_us,
+                           uint16_t motor2_us);
+
+/*******************************************************
+ * GETTERS
+ *******************************************************/
+
+uint16_t brushless_get_motor1_us(void);
+
+uint16_t brushless_get_motor2_us(void);
+
+/*******************************************************
+ * UTILIDADES
+ *******************************************************/
+
+// Convierte porcentaje (0-100) a µs.
+// Solo para pruebas y depuración.
+uint16_t brushless_percent_to_us(float percent);
+
+// Convierte µs a porcentaje.
+float brushless_us_to_percent(uint16_t us);
+
+/*******************************************************
+ * SEGURIDAD
+ *******************************************************/
+
 void brushless_stop(void);
+
+void brushless_emergency_stop(void);
+
+bool brushless_is_armed(void);
 
 #endif

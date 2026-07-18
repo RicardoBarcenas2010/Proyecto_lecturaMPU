@@ -13,7 +13,7 @@
 #define I2C_SDA_PIN             GPIO_NUM_21
 #define I2C_SCL_PIN             GPIO_NUM_22
 
-#define I2C_FREQUENCY           400000
+#define I2C_FREQUENCY           100000
 
 /*=========================
     MPU6050
