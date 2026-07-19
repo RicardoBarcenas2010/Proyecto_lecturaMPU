@@ -34,33 +34,41 @@
 #define ESC_MIN_US              1000
 #define ESC_MAX_US              2000
 
-// PWM BASE INDIVIDUAL PARA CADA MOTOR
-#define PWM_BASE_M1             1176
-#define PWM_BASE_M2             1180
+// ✅ PWM BASE CORRECTOS (según pruebas experimentales)
+#define PWM_BASE_M1             1160
+#define PWM_BASE_M2             1161
 
 // LÍMITES DE CORRECCIÓN DEL PID
-#define MAX_PID_CORRECTION      100.0f
+#define MAX_PID_CORRECTION      40.0f
 
 /*=========================
     CONTROLADOR PID
 =========================*/
 
-// GANANCIAS INICIALES (PD - Ki = 0)
-#define KP_INITIAL              1.5f
+// GANANCIAS
+#define KP_INITIAL              0.242f
 #define KI_INITIAL              0.0f
-#define KD_INITIAL              0.8f
+#define KD_INITIAL              0.08369f
 
 // LÍMITES Y PROTECCIONES
 #define INTEGRAL_LIMIT          30.0f
-#define SATURATION_LIMIT        5.0f
 
 // CONSTANTES DE TIEMPO
 #define DT                      0.01f
 #define DERIVATIVE_ALPHA        0.85f
-#define SLEW_RATE               10.0f
+#define SLEW_RATE               4.0f
 
-// TOLERANCIA DE ERROR
-#define ERROR_TOLERANCE         0.5f
+/*=========================
+    SETPOINT
+=========================*/
+
+#define SETPOINT_DEFAULT        0.0f
+
+/*=========================
+    DEPURACIÓN
+=========================*/
+
+#define DEBUG_ANGLE_THRESHOLD   10.0f
 
 /*=========================
     TAREAS
@@ -70,10 +78,10 @@
 #define CONTROL_TASK_PRIORITY   10
 #define MONITOR_TASK_STACK      2048
 #define MONITOR_TASK_PRIORITY   5
-
-// ✅ TAREA IMU (para compatibilidad con imu.c)
 #define IMU_TASK_STACK_SIZE     4096
 #define IMU_TASK_PRIORITY       5
+#define CONSOLE_TASK_STACK      2048
+#define CONSOLE_TASK_PRIORITY   1
 
 /*=========================
     PERIODOS

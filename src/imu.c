@@ -107,7 +107,7 @@ static void imu_task(void *pvParameters)
             ESP_LOGE(TAG, "Error leyendo MPU6050");
         }
 
-        vTaskDelay(pdMS_TO_TICKS(50));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
