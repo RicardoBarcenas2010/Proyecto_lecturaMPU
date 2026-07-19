@@ -23,8 +23,8 @@ static float gyro_bias_z = 0.0f;
 static float equilibrium_angle = 175.5f;
 static float max_angle_deg = 45.0f;
 
-// Control de impresión - AHORA DESHABILITADO POR DEFECTO
-static bool imu_print_enabled = false;  // CAMBIADO A false
+// Control de impresión
+static bool imu_print_enabled = false;
 
 /* Función para mapear el ángulo a rango -128 a 128 */
 static int16_t map_angle_to_range(float angle_degrees)
@@ -95,7 +95,6 @@ static void imu_task(void *pvParameters)
             imu_data.roll_mapped = map_angle_to_range(imu.roll);
             imu_data.pitch_mapped = map_angle_to_range(imu.pitch);
 
-            // Imprimir solo si está habilitado (y cada cierto tiempo)
             if (imu_print_enabled && (counter % 10 == 0))
             {
                 float roll_scaled = scale_to_degrees(imu_data.roll_mapped);
@@ -108,7 +107,7 @@ static void imu_task(void *pvParameters)
             ESP_LOGE(TAG, "Error leyendo MPU6050");
         }
 
-        vTaskDelay(pdMS_TO_TICKS(50));  // REDUCIDO DE 500ms A 50ms
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
 
@@ -119,9 +118,9 @@ esp_err_t imu_init(void)
     if (xTaskCreate(
             imu_task,
             "IMU_Task",
-            MPU_TASK_STACK_SIZE,
+            IMU_TASK_STACK_SIZE,    // ✅ Ahora definido en system_config.h
             NULL,
-            MPU_TASK_PRIORITY,
+            IMU_TASK_PRIORITY,      // ✅ Ahora definido en system_config.h
             &xIMUTaskHandle) != pdPASS)
     {
         ESP_LOGE(TAG, "No fue posible crear la tarea");
